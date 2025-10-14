@@ -1,16 +1,20 @@
 import React from 'react'
-
+import { useSelector } from 'react-redux'
 const Navbar = () => {
+  const user=useSelector(state=>state.user.user[0]);
   return (
     <div>
       <div data-theme="synthwave" className="navbar theme-controller bg-base-100 shadow-amber-300">
-  <div className="flex-1 items-center ">
+  <div className="flex-2 items-center ">
     <a className="btn btn-soft btn-warning text-orange-400 hover:text-black text-xl">Devumble</a>
+    {user && (<div className="flex justify-center items-center">
+    Welcome <span className=' bg-amber-300 font-2xl font-bold'>{user.firstName}!</span>
+    </div>)}
   </div>
   <div className="flex gap-2">
      <div className="dropdown mb-5">
   <div tabIndex={0} role="button" className="btn m-1">
-    Theme
+    🔴
     <svg
       width="12px"
       height="12px"
@@ -63,12 +67,12 @@ const Navbar = () => {
     </li>
   </ul>
 </div>
-    <div className="dropdown dropdown-end space-x-5 mt-1.5 ">
+    {user && (<div className="dropdown dropdown-end space-x-5 mt-1.5 ">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar  ">
         <div className="w-20 rounded-full h-auto " >
           <img
-            alt="Tailwind CSS Navbar component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+            alt="user img"
+            src={user?.profileImage} />
         </div>
       </div>
       <ul
@@ -83,7 +87,7 @@ const Navbar = () => {
         <li><a>Settings</a></li>
         <li><a>Logout</a></li>
       </ul>
-    </div>
+    </div>)}
   </div>
 </div> 
     </div>

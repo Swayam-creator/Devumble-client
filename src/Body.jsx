@@ -7,7 +7,9 @@ const Body = () => {
   return (
     <div>
       <Navbar/>
+      <div className='pt-20'>
       <Outlet/>
+      </div>
       <Footer/>
     </div>
   )
