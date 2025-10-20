@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import api from '../lib/api';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router';
-import { use } from 'react';
+import { Link, useNavigate } from 'react-router';
 
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emailId, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error,setError]=useState("");
  const navigate=useNavigate();
   const handleSubmit = async () => {
     try {
@@ -22,6 +22,7 @@ const Signup = () => {
       navigate("/login");
     } catch (error) {
       console.error(error.response?.data?.message);
+      setError(error.response?.data?.message || "Signup failed!");
       toast.error(error.response?.data?.message || "Signup failed!");
     }
   };
@@ -73,6 +74,8 @@ const Signup = () => {
           <button className='btn w-[95%]' onClick={handleSubmit}>
             Signup
           </button>
+          <p>Already have an account? <Link to="/login" className='link link-error'>Login</Link></p>
+          <p>{error}</p>
         </div>
       </div>
     </div>
