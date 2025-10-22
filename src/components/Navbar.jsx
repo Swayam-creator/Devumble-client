@@ -16,7 +16,7 @@ const Navbar = () => {
   }, [theme]);
 
   return (
-    <div className="navbar bg-base-300 shadow-lg px-6 transition-all duration-300">
+    <div className="navbar fixed top-0 z-50 bg-base-300 shadow-lg px-6 transition-all duration-300">
       <div className="flex items-center gap-4 flex-1">
         <Link to='/feed' className="btn btn-soft btn-warning text-orange-400 hover:text-black text-xl">
           Devumble
@@ -87,7 +87,7 @@ const Navbar = () => {
                   <span className="badge">New</span>
                 </Link>
               </li>
-              <li><Link>Settings</Link></li>
+              <li><Link>Connections</Link></li>
               <li><Link
                to='/logout'
               >Logout</Link></li>

@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import api from '../lib/api';
 import { addUser } from '../features/user/userSlice';
+import UserCard from './UserCard';
+import { Loader } from 'lucide-react';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -143,19 +145,20 @@ const Profile = () => {
 
   const currentData = isEditing ? editedProfile : profile;
 
-  // Show loading state if profile hasn't loaded yet
+
   if (!myprofile) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center  justify-around">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading profile...</p>
+          <div className="animate-spin rounded-full h-12 w-12 mx-auto mb-4"></div>
+          <p className="text-gray-600"><Loader/></p>
         </div>
       </div>
     );
   }
 
   return (
+    <div className=' lg:flex  justify-between '>
     <div className="min-h-screen -mt-2 to-indigo-100 p-6">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -431,6 +434,10 @@ const Profile = () => {
           </div>
         </div>
       </div>
+    </div>
+    <div className='mt-5 lg:-mt-20'>
+       <UserCard user={currentData} showActions={false}/>
+    </div>
     </div>
   );
 };
