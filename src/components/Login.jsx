@@ -23,7 +23,7 @@ const Login = () => {
       );
       if (res.data.success) {
         dispatch(addUser(res.data.data));
-        navigate("/");
+        navigate("/feed");
         toast.success(res.data.message || "Login successful!");
       }
     } catch (error) {

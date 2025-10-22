@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <div className="navbar bg-base-300 shadow-lg px-6 transition-all duration-300">
       <div className="flex items-center gap-4 flex-1">
-        <Link to='/' className="btn btn-soft btn-warning text-orange-400 hover:text-black text-xl">
+        <Link to='/feed' className="btn btn-soft btn-warning text-orange-400 hover:text-black text-xl">
           Devumble
         </Link>
 

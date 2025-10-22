@@ -10,6 +10,7 @@ import api from './lib/api';
 import Profile from './components/Profile';
 import Logout from './components/Logout';
 import LoginPage from './pages/LoginPage';
+import  Feed from './components/Feed'
 function App() {
   const navigate=useNavigate();
   const dispatch=useDispatch();
@@ -21,10 +22,10 @@ function App() {
       const res=await api.get('/profile/view');
       if(res.data.success){
         dispatch(addUser(res.data.data));
-         navigate('/');
+         navigate('/feed');
       }
     } catch (error) {
-      if(error.response?.status===401) navigate('/login');
+      if(error.response?.status===401 || error.response.status===500) navigate('/login');
       console.log(error.code);
     }
   }
@@ -38,6 +39,7 @@ function App() {
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/logout' element={<Logout/>} />
+        <Route path='/feed' element={<Feed/>}/>
         <Route path='/profile/view' element={<Profile/>}/>
       </Route>
     </Routes>     
