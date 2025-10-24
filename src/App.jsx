@@ -11,6 +11,8 @@ import Profile from './components/Profile';
 import Logout from './components/Logout';
 import LoginPage from './pages/LoginPage';
 import  Feed from './components/Feed'
+import RequestPage from './pages/RequestPage';
+import ConnectionsPage from './pages/ConnectionsPage';
 function App() {
   const navigate=useNavigate();
   const dispatch=useDispatch();
@@ -41,6 +43,8 @@ function App() {
         <Route path='/logout' element={<Logout/>} />
         <Route path='/feed' element={<Feed/>}/>
         <Route path='/profile/view' element={<Profile/>}/>
+        <Route path='/pending-requests' element={<RequestPage/>} />
+        <Route path='/connections' element={<ConnectionsPage/>}/>
       </Route>
     </Routes>     
     </>

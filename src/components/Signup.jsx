@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import api from '../lib/api';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
-
+import { useRef } from 'react';
+import { Eye,EyeClosed } from 'lucide-react';
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emailId, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error,setError]=useState("");
+  const [showPassword,setShowPassword]=useState(false);
+
  const navigate=useNavigate();
   const handleSubmit = async () => {
     try {
@@ -28,7 +31,7 @@ const Signup = () => {
   };
 
   return (
-    <div className='flex justify-center items-center h-[50vh]'>
+    <div className='flex justify-center items-center h-[50vh] mt-20'>
       <div className="card bg-primary text-primary-content w-96 rounded-2xl shadow-amber-300">
         <div className="card-body">
           <h2 className="card-title justify-center font-bold">Signup</h2>
@@ -60,15 +63,32 @@ const Signup = () => {
               value={emailId}
               onChange={(e) => setEmail(e.target.value)}
             />
+            
+            <label className="font-bold">Password:</label>
+<div className="relative w-[96%]">
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Enter your password"
+    className="input w-full pr-2"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  {showPassword ? (
+    <Eye
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-amber-400"
+      size={20}
+    />
+  ) : (
+    <EyeClosed
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-amber-400"
+      size={20}
+    />
+  )}
+</div>
 
-            <label className='font-bold'>Password:</label>
-            <input
-              type="password"
-              placeholder='Enter your password'
-              className='input'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            
           </div>
 
           <button className='btn w-[95%]' onClick={handleSubmit}>

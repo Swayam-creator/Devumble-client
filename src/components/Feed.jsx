@@ -1,47 +1,80 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../lib/api";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addtoFeed } from "../features/feed/feedSlice";
 import UserCard from "./UserCard";
-import { Loader } from "lucide-react";
+import { motion } from "motion/react";
+import ShimmerCard from "./Shimmer";
 
 const Feed = () => {
-    const dispatch=useDispatch();
-    const feed=useSelector((state)=>state?.feed?.feed);
-    const loggedinUser=useSelector((state)=>state?.user?.user);
-    const getFeedData=async()=>{
-       try {
-         if(feed && feed.length>0) return;
-         const data= await api.get('/user/feed');
-         console.log(data.data.data);
-         dispatch(addtoFeed(data.data.data));
-         console.log(data)
-       } catch (error) {
-         console.log(error);
-       }
-    }
-    useEffect(()=>{
-     getFeedData();
-    },[loggedinUser]);
-    if(feed.length===0) return (
-    <div className="flex flex-col justify-center items-center" >
-    <img className=" h-[500px] w-[500px]" src="/no-more-user.png" alt="dark" />
-      <p className=" font-serif text-5xl font-bold">You're all caught up</p>
-    </div>)
-  return (
-    <div className=" grid-rows-1 ">
-        <div className="flex justify-center items-center flex-col gap-2 ">
-  {feed?.length > 0 ? (
-    feed?.map((user) => {
-         return <UserCard key={user._id} user={user} />
-    })
-  ) : (
-    <p className="text-gray-600 text-lg rotate-180 transition-all animate-spin"><Loader /></p>
-  )}
-</div>
-</div>
-  )
-}
+  const dispatch = useDispatch();
+  const feed = useSelector((state) => state?.feed?.feed);
+  const loggedinUser = useSelector((state) => state?.user?.user);
+  const [loading, setLoading] = useState(true);
 
-export default Feed
+  const getFeedData = async () => {
+    try {
+      if (feed && feed.length > 0) {
+        setLoading(false);
+        return;
+      }
+      const data = await api.get("/user/feed");
+      dispatch(addtoFeed(data.data.data));
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getFeedData();
+  }, [loggedinUser]);
+
+  if (loading) {
+    return (
+      <div className="pb-24 min-h-screen bg-base-100 flex justify-center">
+        <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-1 lg:grid-cols-1 gap-6">
+          {Array.from({ length:6}).map((_, index) => (
+            <ShimmerCard key={index} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // 🖼 If no feed data found
+  if (feed.length === 0)
+    return (
+      <div className="flex flex-col justify-center items-center min-h-[80vh]">
+        <img
+          className="h-[400px] w-[400px] object-contain opacity-70"
+          src="/no-more-user.png"
+          alt="dark"
+        />
+        <p className="font-serif text-4xl font-bold text-gray-700 mt-4">
+          You're all caught up!
+        </p>
+      </div>
+    );
+
+  
+  return (
+    <div className="pb-24 min-h-screen bg-base-100 flex justify-center">
+      <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {feed.map((user, index) => (
+          <motion.div
+            key={user._id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <UserCard user={user} />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Feed;
