@@ -87,10 +87,11 @@ const Navbar = () => {
                   <span className="badge">New</span>
                 </Link>
               </li>
-              <li><Link>Connections</Link></li>
+              <li><Link to='/connections' >Connections</Link></li>
               <li><Link
                to='/logout'
               >Logout</Link></li>
+              <li><Link to='/pending-requests'>Requests</Link></li>
             </ul>
           </div>
         )}
