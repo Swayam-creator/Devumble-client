@@ -4,6 +4,7 @@ import { ALLOWED_CONNECTION_REQUEST_STATUS } from "../../constant";
 import api from "../lib/api"
 import { removeFromFeed } from "../features/feed/feedSlice";
 import { useDispatch } from "react-redux";
+import ResponsiveImage from "./ResponsiveImage";
 const UserCard = ({ user,showActions=true }) => {
     console.log(user._id);
     const dispatch=useDispatch();
@@ -42,10 +43,13 @@ const UserCard = ({ user,showActions=true }) => {
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden relative shadow-purple-500/50 border-b-purple-600">
           
           <div className="relative h-96">
-            <img
+            <ResponsiveImage
               src={profileImage}
-              alt={firstName}
-              className="w-full h-full object-cover"
+              alt={`${firstName} ${lastName}`}
+              className="rounded-full"
+              width="96"
+              height="96"
+              fallbackSrc="https://cdn-icons-png.flaticon.com/512/149/149071.png"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 

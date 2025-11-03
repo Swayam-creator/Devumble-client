@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState={
-    request:null,
+    request:[],
 };
 
 const pendingSlice=createSlice({

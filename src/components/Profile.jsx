@@ -15,7 +15,6 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [uploadMode, setUploadMode] = useState('url'); 
   
-  // Initialize with safe defaults
   const [profile, setProfile] = useState({
     firstName: myprofile?.firstName || '',
     lastName: myprofile?.lastName || '',
@@ -31,7 +30,7 @@ const Profile = () => {
   const [newSkill, setNewSkill] = useState('');
   const [newProject, setNewProject] = useState('');
 
-  // Update profile state when myprofile changes (after Redux loads)
+  
   useEffect(() => {
     if (myprofile) {
       const updatedProfile = {
@@ -158,8 +157,8 @@ const Profile = () => {
   }
 
   return (
-    <div className=' lg:flex  justify-between '>
-    <div className="min-h-screen -mt-2 to-indigo-100 p-6">
+    <div className=' lg:flex  justify-between mb-10 p-5 pt-10 pr-3.5 text-base-content'>
+    <div className="min-h-screen -mt-2 to-indigo-100 p-6 ">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-32 relative">
@@ -186,7 +185,7 @@ const Profile = () => {
                 />
 
                 {isEditing && (
-                  <div className="absolute bottom-0 right-0 bg-white p-2 rounded-lg shadow-lg">
+                  <div className="absolute bottom-0 right-0 bg-white text-gray-600 p-2 rounded-lg shadow-lg">
                     <Camera className="w-5 h-5 text-gray-600 mb-2" />
                     <select
                       value={uploadMode}
@@ -435,7 +434,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
-    <div className='mt-5 lg:-mt-20'>
+    <div className='mt-5 lg:mt-20'>
        <UserCard user={currentData} showActions={false}/>
     </div>
     </div>

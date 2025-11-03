@@ -9,7 +9,7 @@ const connectionSlice=createSlice({
     initialState,
     reducers:{
         addConnections:(state,action)=>{
-            state.connections.push(action.payload);
+            state.connections=action.payload||[];
         }
     }
 });

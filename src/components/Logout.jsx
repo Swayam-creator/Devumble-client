@@ -23,11 +23,18 @@ const Logout = () => {
     }
 
   return (
-    <div>
-       <button
-       className='btn btn-soft'
-       onClick={()=>logoutUser()}
-       >Logout</button>
+    <div className='flex justify-center'>
+       <button className="btn" onClick={()=>document.getElementById('my_modal_1').showModal()}>Logout</button>
+<dialog id="my_modal_1" className="modal">
+  <div className="modal-box">
+    <h3 className="font-bold text-lg">Are you sure ?</h3>
+    <div className="modal-action">
+      <form method="dialog">
+        <button className="btn" onClick={logoutUser}>Logout</button>
+      </form>
+    </div>
+  </div>
+</dialog>
     </div>
   )
 }

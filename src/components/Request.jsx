@@ -1,5 +1,5 @@
-const Request = ({connections}) => {
-const {firstName ,lastName ,emailId ,skills, projects ,gender, profileImage, about}=connections;
+const Request = ({conn}) => {
+const [{firstName ,lastName ,emailId ,skills, projects ,gender, profileImage, about ,_id}]=conn;
   return (
     <div>
        <div>

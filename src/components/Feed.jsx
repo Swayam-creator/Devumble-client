@@ -43,7 +43,7 @@ const Feed = () => {
     );
   }
 
-  // 🖼 If no feed data found
+  //  If no feed data found
   if (feed.length === 0)
     return (
       <div className="flex flex-col justify-center items-center min-h-[80vh]">
@@ -61,7 +61,7 @@ const Feed = () => {
   
   return (
     <div className="pb-24 min-h-screen bg-base-100 flex justify-center">
-      <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-1 lg:grid-cols-1 gap-6">
         {feed.map((user, index) => (
           <motion.div
             key={user._id}

@@ -5,14 +5,15 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../features/user/userSlice";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
+import { Eye, EyeClosed } from "lucide-react";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [emailId, setEmail] = useState("a@gmail.com");
   const [password, setPassword] = useState("abc@1234");
-  const [error,setError]=useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-
 
   const handleSubmit = async () => {
     try {
@@ -50,28 +51,50 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <label htmlFor="password" className="font-bold">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              className="input input-bordered w-full rounded-lg"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <label className="font-bold">Password:</label>
+            <div className="relative w-[96%]">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="input w-full pr-2"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {showPassword ? (
+                <Eye
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-amber-400"
+                  size={20}
+                />
+              ) : (
+                <EyeClosed
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-amber-400"
+                  size={20}
+                />
+              )}
+            </div>
+
+            {error && (
+              <p className="alert alert-error alert-outline">{error}</p>
+            )}
+
+            <button className="btn btn-primary w-full" onClick={handleSubmit}>
+              Log in
+            </button>
+
+            <div className="flex justify-between mt-2">
+              <Link to="/reset-password" className="link link-info">
+                Forgot password?
+              </Link>
+              <div className="flex flex-col">
+                <span>Already a user?</span>
+                <Link to="/signup" className="link link-info">
+                  Create an account
+                </Link>
+              </div>
+            </div>
           </div>
-       { error && <p className="alert alert-error alert-outline">{error}</p>}
-          <button className="btn btn-primary w-full" onClick={handleSubmit}>
-            Log in
-          </button>
-          <div className="flex justify-between">
-          <Link to='/reset-password' className="link link-info"> Forgot password? </Link>
-            <div className="flex flex-col">
-            <span>Already a user?</span><Link to='/signup' className="link link-info"> Create a account </Link> 
-            </div> 
-          </div>
-            
         </div>
       </div>
     </div>
