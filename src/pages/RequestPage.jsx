@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { Suspense,lazy } from "react";
-// import Request from "../components/Request";
-import { addPending } from "../features/pendingRequest/pendingRequestSlice";
+import { addPending, removeRequest } from "../features/pendingRequest/pendingRequestSlice";
 import api from "../lib/api";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-
+import {ALLOWED_CONNECTION_REVIEW_STATUS} from '../../constant';
+import { connect } from "react-redux";
+import { normalize } from "../utils/normalizeArray";
 
 const RequestPage = () => {
   const connections = useSelector((state) => state.request.request);
@@ -15,18 +15,29 @@ const RequestPage = () => {
   const fetchPendingRequest = async () => {
     try {
       const res = await api.get("/user/request/recieved");
-      let requests = [res.data.data.senderId];
-      console.log(requests);
+      let requests = normalize(res.data.data);
+        console.log(requests)
         dispatch(addPending(requests)); 
-  
-
       toast.success(res.data.message);
     } catch (error) {
       console.error(error);
       toast.error("Failed to fetch pending requests");
     }
   };
-
+const reviewStatus=ALLOWED_CONNECTION_REVIEW_STATUS;
+  const handleReviewStatus=async(reviewstatus,requestId)=>{
+    try {
+      const res=await api.post(`/request/review/${reviewstatus}/${requestId}`);
+      if(res.data.success){
+        toast.success('Review status updated successfully');
+        console.log('Status updated');
+        dispatch(removeRequest(requestId));
+      }
+    } catch (error) {
+      console.log(error.message+"failed");
+      toast.error(error?.message)
+    }
+  }
   useEffect(() => {
     fetchPendingRequest();
   }, []);
@@ -51,19 +62,50 @@ const RequestPage = () => {
   }
   
 
-  /* <Request key={conn._id} conn={conn} /> */
+
   return (
     <div>
-      {
-        connections?.map((conn) => (
-          <div>
-               <p>{conn?._id}</p>
-               <p>{conn?.firstName}</p>
-               <p>{conn?.lastName}</p>
-               <pre>{conn?.about}</pre>
-               <img src={conn?.profileImage} alt="profileImage" className="w-7 h-5" />
+       {
+        connections?.map((conn,i) => {
+          const{firstName,lastName,about,profileImage,_id}=conn?.senderId;
+      
+      return (
+          <div key={conn?._id} >
+               <div className="w-full max-w-xl mx-auto"> 
+      <div className="border-2 rounded-2xl p-5 bg-base-100 border-orange-200 shadow-lg">
+        <div className="flex items-center gap-4">
+          <div className="flex-shrink-0">
+            <img
+              src={profileImage}
+              className="h-24 w-24 rounded-full object-cover"
+              alt={`${firstName} ${lastName}`}
+            />
           </div>
-      ))}
+
+          <div className="flex-1 min-w-0">
+            <div className="text-2xl font-medium">
+              {firstName} {lastName}
+            </div>
+            <p className="text-gray-400 text-sm truncate">
+              {about}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button className="btn btn-soft btn-secondary hover:shadow-amber-500" 
+            onClick={()=>handleReviewStatus(reviewStatus[0],conn?._id)}
+            >Accepted</button>
+            <button className="btn btn-soft btn-error"
+            onClick={()=>handleReviewStatus(reviewStatus[1],conn?._id)} 
+            >Ignored</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      </div>
+     
+      )
+      })} 
     </div>
   );
 };

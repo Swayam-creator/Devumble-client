@@ -10,9 +10,9 @@ import Profile from './components/Profile';
 import Logout from './components/Logout';
 import LoginPage from './pages/LoginPage';
 import { Suspense,lazy } from 'react';
-const Request=lazy(()=>{import("./pages/RequestPage")});
+const Request=lazy(()=>import("./pages/RequestPage"));
 const Connections=lazy(()=>import("./pages/ConnectionsPage"));
-const Feed=lazy(()=>import("./components/Feed"));
+import Feed from "./components/Feed"
 import Fallback from './utils/Fallback';
 function App() {
   const navigate=useNavigate();
@@ -25,6 +25,7 @@ function App() {
       const res=await api.get('/profile/view');
       if(res.data.success){
         dispatch(addUser(res.data.data));
+        if(window.location.pathname==='/login' || window.location.pathname==='/signup')
          navigate('/feed');
       }
     } catch (error) {
@@ -44,9 +45,7 @@ function App() {
         <Route path='/logout' element={<Logout/>} />
        
         <Route path='/feed' element={
-          <Suspense fallback={<Fallback/>}>
             <Feed/>
-          </Suspense>
         }/>
         <Route path='/profile/view' element={<Profile/>}/>
         <Route path='/pending-requests' element={

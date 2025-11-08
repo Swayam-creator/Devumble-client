@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
+import { lazy } from 'react';
+import { Suspense } from 'react';
 const Connections=lazy(()=>import("../components/Connections"))
 import api from '../lib/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { addConnections } from '../features/connections/ConnectionSlice';
 import toast from 'react-hot-toast';
-import { lazy } from 'react';
-import { Suspense } from 'react';
 import Fallback from '../utils/Fallback';
+import { normalize } from '../utils/normalizeArray';
 
 const ConnectionsPage = () => {
   const connections = useSelector((state) => state.connections.connections);
@@ -15,11 +16,9 @@ const ConnectionsPage = () => {
   useEffect(() => {
     const getConnections = async () => {
       try {
-       
         const res = await api.get('/user/connections');
-        const connectionsData = res.data.data || [];
+        const connectionsData = normalize(res.data.data);
         console.log("Fetched:", connectionsData);
-
         dispatch(addConnections(connectionsData));
         
         if (connectionsData?.length > 0) {
@@ -38,7 +37,7 @@ const ConnectionsPage = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="text-center">
-          <p className="font-mono text-4xl mb-4">No connections yet!</p>
+          <p className="font-hero  text-4xl mb-4">No connections yet!</p>
           <p className="text-gray-500 text-lg">
             Start connecting with people to build your network
           </p>

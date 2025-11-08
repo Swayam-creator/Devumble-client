@@ -2,11 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/Devumble-logo.png" />
+    <link   rel="icon" type="image/svg+xml" href="/Devumble-logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>devumble-client</title>
 
-    <link href="/src/style.css" rel="stylesheet">
+    <link rel="preload"  href="/src/style.css" rel="stylesheet">
+    <link rel="preload" as="image" href="/hero.webp" fetchpriority="high" />
+<link rel="preload" as="font" href="/fonts/inter.woff2" type="font/woff2" crossorigin>
+
   </head>
   <body>
     <div id="root"></div>

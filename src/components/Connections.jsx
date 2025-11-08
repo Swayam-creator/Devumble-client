@@ -4,7 +4,8 @@ const Connections = ({ conn }) => {
   const {  firstName, lastName, emailId, about, gender, profileImage } = conn;
 
   const handleEmail = (email) => {
-    window.location.href = `mailto:${email}?subject=Invitation to collab with Me`;
+   const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Collaboration%20Request&body=Hi%20there!`;
+    window.open(gmailUrl, "_blank");
   };
 
   return (

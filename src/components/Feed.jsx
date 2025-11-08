@@ -32,7 +32,8 @@ const Feed = () => {
   }, [loggedinUser]);
 
   if (loading) {
-    return (
+    setTimeout(()=>{
+return (
       <div className="pb-24 min-h-screen bg-base-100 flex justify-center">
         <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-1 lg:grid-cols-1 gap-6">
           {Array.from({ length:6}).map((_, index) => (
@@ -40,23 +41,28 @@ const Feed = () => {
           ))}
         </div>
       </div>
-    );
-  }
+    )
+    },2);  
+}
 
   //  If no feed data found
-  if (feed.length === 0)
-    return (
+  if (feed.length === 0){
+  
+  return (
       <div className="flex flex-col justify-center items-center min-h-[80vh]">
+        <picture>
         <img
           className="h-[400px] w-[400px] object-contain opacity-70"
-          src="/no-more-user.png"
+          srcSet="/no-more-user.png"
           alt="dark"
         />
+        </picture>
         <p className="font-serif text-4xl font-bold text-gray-700 mt-4">
           You're all caught up!
         </p>
       </div>
     );
+}
 
   
   return (
