@@ -8,11 +8,12 @@ import { addConnections } from '../features/connections/ConnectionSlice';
 import toast from 'react-hot-toast';
 import Fallback from '../utils/Fallback';
 import { normalize } from '../utils/normalizeArray';
+import { useState } from 'react';
 
 const ConnectionsPage = () => {
   const connections = useSelector((state) => state.connections.connections);
   const dispatch = useDispatch();
-
+  const [loading,setLoading]=useState(true)
   useEffect(() => {
     const getConnections = async () => {
       try {
@@ -20,19 +21,18 @@ const ConnectionsPage = () => {
         const connectionsData = normalize(res.data.data);
         console.log("Fetched:", connectionsData);
         dispatch(addConnections(connectionsData));
-        
-        if (connectionsData?.length > 0) {
-          toast.success(res.data.message || "Connections fetched successfully");
-        }
       } catch (error) {
         console.error("Error fetching connections:", error);
         toast.error(error.response?.data?.message || "Failed to fetch connections");
+      }finally{
+        setLoading(false);
       }
     };
 
     getConnections();
+   
   }, [dispatch]); 
-
+  if(loading) return <Fallback/>;
   if (!connections || connections.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen">

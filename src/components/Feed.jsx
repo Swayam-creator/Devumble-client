@@ -5,6 +5,7 @@ import { addtoFeed } from "../features/feed/feedSlice";
 import UserCard from "./UserCard";
 import { motion } from "motion/react";
 import ShimmerCard from "./Shimmer";
+import CaughtUp from "./CaughtUp";
 
 const Feed = () => {
   const dispatch = useDispatch();
@@ -14,66 +15,53 @@ const Feed = () => {
 
   const getFeedData = async () => {
     try {
-      if (feed && feed.length > 0) {
+      if (feed?.length > 0) {
         setLoading(false);
         return;
       }
-      const data = await api.get("/user/feed");
-      dispatch(addtoFeed(data.data.data));
-      setLoading(false);
+      const res = await api.get("/user/feed");
+      dispatch(addtoFeed(res.data.data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    getFeedData();
+    if (loggedinUser) {
+      getFeedData();
+    }
   }, [loggedinUser]);
 
+  // 🔄 Loading State
   if (loading) {
-    setTimeout(()=>{
-return (
-      <div className="pb-24 min-h-screen bg-base-100 flex justify-center">
-        <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-1 lg:grid-cols-1 gap-6">
-          {Array.from({ length:6}).map((_, index) => (
+    return (
+      <div className="pb-24 min-h-screen flex justify-center">
+        <div className="w-full max-w-5xl px-4 py-6 grid gap-6">
+          {Array.from({ length: 6 }).map((_, index) => (
             <ShimmerCard key={index} />
           ))}
         </div>
       </div>
-    )
-    },2);  
-}
-
-  //  If no feed data found
-  if (feed.length === 0){
-  
-  return (
-      <div className="flex flex-col justify-center items-center min-h-[80vh]">
-        <picture>
-        <img
-          className="h-[400px] w-[400px] object-contain opacity-70"
-          srcSet="/no-more-user.png"
-          alt="dark"
-        />
-        </picture>
-        <p className="font-serif text-4xl font-bold text-gray-700 mt-4">
-          You're all caught up!
-        </p>
-      </div>
     );
-}
+  }
 
-  
+
+  if (!feed || feed.length === 0) {
+    return <CaughtUp onRefresh={getFeedData} />;
+  }
+
+ 
   return (
-    <div className="pb-24 min-h-screen bg-base-100 flex justify-center">
-      <div className="w-full max-w-5xl px-4 py-6 grid sm:grid-cols-1 lg:grid-cols-1 gap-6">
+    <div className="pb-24 min-h-screen flex justify-center">
+      <div className="w-full max-w-5xl px-4 py-6 grid gap-6">
         {feed.map((user, index) => (
           <motion.div
             key={user._id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+            transition={{ delay: index * 0.08 }}
           >
             <UserCard user={user} />
           </motion.div>

@@ -14,7 +14,7 @@ const feedSlice = createSlice({
     },
     removeFromFeed: (state, action) => {
     
-      state.feed = state.feed.filter((u) => u._id !== action.payload);
+      state.feed = state?.feed?.filter((u) => u._id !== action.payload);
     },
   },
 });

@@ -9,6 +9,7 @@ import api from './lib/api';
 import Profile from './components/Profile';
 import Logout from './components/Logout';
 import LoginPage from './pages/LoginPage';
+import WakeinServer from './components/WakinServer';
 import { Suspense,lazy } from 'react';
 const Request=lazy(()=>import("./pages/RequestPage"));
 const Connections=lazy(()=>import("./pages/ConnectionsPage"));
@@ -25,10 +26,13 @@ function App() {
       const res=await api.get('/profile/view');
       if(res.data.success){
         dispatch(addUser(res.data.data));
-        if(window.location.pathname==='/login' || window.location.pathname==='/signup')
+        if(window.location.pathname==='/login' || window.location.pathname==='/signup' || window.location.pathname==='/')
          navigate('/feed');
       }
     } catch (error) {
+      if(!error.response){
+         WakeinServer();
+      }
       if(error.response?.status===401 || error.response.status===500) navigate('/login');
       console.log(error.code);
     }
