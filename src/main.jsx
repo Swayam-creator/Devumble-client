@@ -9,7 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { ThemeProvider } from './context/ThemeContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
+  <BrowserRouter >
   <Provider store={store}>
   <PersistGate loading={null}   persistor={persistor} >
   <ThemeProvider>

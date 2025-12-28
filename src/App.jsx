@@ -15,6 +15,7 @@ const Request=lazy(()=>import("./pages/RequestPage"));
 const Connections=lazy(()=>import("./pages/ConnectionsPage"));
 import Feed from "./components/Feed"
 import Fallback from './utils/Fallback';
+import ProtectedRoute from './utils/ProtectedRoute';
 function App() {
   const navigate=useNavigate();
   const dispatch=useDispatch();
@@ -24,16 +25,15 @@ function App() {
     if(userData && userData.length>0) return;
     try {
       const res=await api.get('/profile/view');
-      if(res.data.success){
+      if(res.data.success===false) return navigate('/login');
+      if(res.data.success===true){
         dispatch(addUser(res.data.data));
         if(window.location.pathname==='/login' || window.location.pathname==='/signup' || window.location.pathname==='/')
-         navigate('/feed');
+         return navigate('/feed');
       }
+    
     } catch (error) {
-      if(!error.response){
-         WakeinServer();
-      }
-      if(error.response?.status===401 || error.response.status===500) navigate('/login');
+      if(error.response?.status===401 || error.response?.status===500) navigate('/login');
       console.log(error.code);
     }
   }
@@ -48,9 +48,8 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/logout' element={<Logout/>} />
        
-        <Route path='/feed' element={
-            <Feed/>
-        }/>
+        <Route element={<ProtectedRoute/>}>
+          <Route path='/feed' element={<Feed/>} />
         <Route path='/profile/view' element={<Profile/>}/>
         <Route path='/pending-requests' element={
           <Suspense fallback={<Fallback/>}>
@@ -60,6 +59,7 @@ function App() {
         <Route path='/connections' element={<Suspense fallback={<Fallback/>}>
         <Connections/>
         </Suspense>}/>
+        </Route>
       </Route>
     </Routes>     
     </>
