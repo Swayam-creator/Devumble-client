@@ -10,15 +10,13 @@ import CaughtUp from "./CaughtUp";
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((state) => state?.feed?.feed);
+
   const loggedinUser = useSelector((state) => state?.user?.user);
+
   const [loading, setLoading] = useState(true);
 
   const getFeedData = async () => {
     try {
-      if (feed?.length > 0) {
-        setLoading(false);
-        return;
-      }
       const res = await api.get("/user/feed");
       dispatch(addtoFeed(res.data.data));
     } catch (error) {
@@ -32,9 +30,12 @@ const Feed = () => {
     if (loggedinUser) {
       getFeedData();
     }
-  }, [loggedinUser]);
+    else{
+      setLoading(false);
+    }
+  }, []);
 
-  // 🔄 Loading State
+ 
   if (loading) {
     return (
       <div className="pb-24 min-h-screen flex justify-center">

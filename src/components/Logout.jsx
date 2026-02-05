@@ -1,4 +1,4 @@
-import React from 'react'
+
 import api from '../lib/api'
 import { removeUser } from '../features/user/userSlice'
 import { useDispatch } from 'react-redux'

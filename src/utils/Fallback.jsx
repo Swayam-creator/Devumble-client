@@ -1,4 +1,3 @@
-import React from 'react'
 import ShimmerCard from '../components/Shimmer'
 const Fallback = () => {
   return (
